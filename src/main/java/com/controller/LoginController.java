@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.annotation.Resource;
-import java.util.Objects;
 
 @Controller
 public class LoginController {

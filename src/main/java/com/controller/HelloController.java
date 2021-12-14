@@ -15,4 +15,9 @@ public class HelloController {
     public String register() {
         return "register";
     }
+
+    @RequestMapping(value = "main")
+    public String main(){
+        return "main";
+    }
 }

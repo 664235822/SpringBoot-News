@@ -448,7 +448,9 @@ ol, ul {
 
 .sub-header .inner .sub-logo {
     float: left;
+    font-size: 30px;
     height: 54px;
+    vertical-align: middle;
 }
 
 .sub-header .inner .sub-desc {
@@ -504,7 +506,7 @@ ol, ul {
 }
 
 .main_con .list_con li .text_con {
-    width: 600px;
+    width: 100%;
     padding: 0 0 16px 0;
     font-size: 0;
 }
@@ -520,21 +522,17 @@ ol, ul {
 }
 
 .main_con .list_con li .text_con .desc {
+    padding: 8px;
     font-size: 14px;
     color: #545c63;
     font-weight: 600;
-    line-height: 14px;
     text-align: left;
     margin-bottom: 18px;
-    display: inline-block;
-    max-width: 350px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    display: block;
 }
 
 .main_con .list_con li .text_con .info i {
-    padding: 0 8px;
+    padding: 4px;
     font-size: 12px;
     color: #9199a1;
     text-align: left;
@@ -691,7 +689,7 @@ ol, ul {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url("https://static3.sycdn.imooc.com/static/img/column/qiqi_wechat_qr2.png");
+    background-image: url("/static/img/664235822.png");
 }
 
 .main_con .right_con .wechatma-con .ma-con .desc {
