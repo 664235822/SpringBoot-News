@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
@@ -19,8 +21,9 @@ public class LoginController {
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
     @ResponseBody
-    public boolean Login(User user, @SessionAttribute("check_code") String check_code) {
+    public boolean Login(User user, @SessionAttribute("check_code") String check_code, HttpSession session) {
         if (usersMapper.queryUser(user) != null && user.getCheck_code().equalsIgnoreCase(check_code)) {
+            session.setAttribute("user", user);
             return true;
         }
 
@@ -30,8 +33,12 @@ public class LoginController {
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     @ResponseBody
     public boolean Register(User user) {
-        usersMapper.addUser(user);
+        try {
+            usersMapper.addUser(user);
 
-        return true;
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

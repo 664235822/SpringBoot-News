@@ -11,6 +11,25 @@
         <result column="content" property="content" javaType="String"/>
     </resultMap>
     <select id="queryNewsList" resultType="com.entity.News">
-        select * from news;
+        select *
+        from news;
     </select>
+    <select id="queryNews" resultType="com.entity.News">
+        select *
+        from news
+        where id = ${id};
+    </select>
+    <insert id="insertNews" parameterType="com.entity.News">
+        insert into news (title, author, content) value (#{title},#{author},#{content});
+    </insert>
+    <update id="updateNews" parameterType="com.entity.News">
+        update news
+        set content = #{content}
+        where title = #{title};
+    </update>
+    <delete id="deleteNews">
+        delete
+        from news
+        where id = ${id};
+    </delete>
 </mapper>

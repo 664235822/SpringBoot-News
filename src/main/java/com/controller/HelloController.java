@@ -16,8 +16,18 @@ public class HelloController {
         return "register";
     }
 
-    @RequestMapping(value = "main")
-    public String main(){
+    @RequestMapping(value = "/main")
+    public String main() {
         return "main";
+    }
+
+    @RequestMapping(value = "/admin")
+    public String admin() {
+        return "admin";
+    }
+
+    @RequestMapping(value = "/update")
+    public String update() {
+        return "update";
     }
 }

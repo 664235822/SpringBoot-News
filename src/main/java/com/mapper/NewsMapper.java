@@ -9,4 +9,12 @@ import java.util.List;
 public interface NewsMapper {
 
     List<News> queryNewsList();
+
+    News queryNews(int id);
+
+    void insertNews(News news);
+
+    void updateNews(News news);
+
+    void deleteNews(int id);
 }

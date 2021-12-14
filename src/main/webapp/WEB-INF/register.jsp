@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>注册</title>
-    <link rel="stylesheet" href="/static/css/index.css"/>
-    <script src="/static/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/SpringBoot-News/static/css/index.css"/>
+    <script src="/SpringBoot-News/static/js/jquery-3.6.0.min.js"></script>
     <script>
         $(function () {
             $("#submit-button").click(function () {
@@ -23,12 +23,13 @@
                 }
 
                 $.ajax({
-                    url: "/user/register",
+                    url: "/SpringBoot-News/user/register",
                     type: "POST",
                     dataType: "json",
                     data: {"username": username, "password": password},
                     success: function (data) {
                         alert("注册成功");
+                        window.location.href = "/SpringBoot-News/main"
                     },
                     error: function (data) {
                         alert("注册失败");
@@ -73,7 +74,7 @@
         </form>
     </div>
     <div class="rl-model-footer">
-        <div class="pop-login-signup-box clearfix"><a href="/login" data-fromto="signup:signin" class="xa-showSignin">返回账号登录</a>
+        <div class="pop-login-signup-box clearfix"><a href="/SpringBoot-News/login" data-fromto="signup:signin" class="xa-showSignin">返回账号登录</a>
         </div>
     </div>
 </body>
