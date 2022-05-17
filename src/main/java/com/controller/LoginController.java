@@ -14,12 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@RequestMapping(value ="/user" )
 public class LoginController {
 
     @Resource
     private UsersMapper usersMapper;
 
-    @RequestMapping(value = "/user/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public boolean Login(User user, @SessionAttribute("check_code") String check_code, HttpSession session) {
         if (usersMapper.queryUser(user) != null && user.getCheck_code().equalsIgnoreCase(check_code)) {
@@ -30,7 +31,7 @@ public class LoginController {
         return false;
     }
 
-    @RequestMapping(value = "/user/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public boolean Register(User user) {
         try {

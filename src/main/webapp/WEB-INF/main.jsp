@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>新闻首页</title>
-    <link rel="stylesheet" href="/SpringBoot-News/static/css/index.css"/>
-    <script src="/SpringBoot-News/static/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/index.css"/>
+    <script src="${pageContext.request.contextPath}/static/js/jquery-3.6.0.min.js"></script>
     <script>
         $(function () {
             $.ajax({
-                url: "/SpringBoot-News/news/querylist",
+                url: "${pageContext.request.contextPath}/news/querylist",
                 type: "POST",
                 dataType: "json",
                 success: function (data) {
@@ -16,8 +16,10 @@
                     let html = "";
                     $.each(data.list, function (i, item) {
                         html += '<li class="clearfix"> <div class="text_con l"> ' +
-                            '<a href="/SpringBoot-News/read/92" target="_blank"> <p class="title">' + item.title + '</p> </a> ' +
-                            '<div class="info"> <span>作者：' + item.author + '</span> </div> <div class="desc">' +
+                            '<a href="${pageContext.request.contextPath}/news/queryNews?id=' +
+                            item.id + '" target="_self"> <p class="title">' +
+                            item.title + '</p> </a> <div class="info"> <span>作者：' +
+                            item.author + '</span> </div> <div class="desc">' +
                             item.content + '</div> <div class="try-read-box clearfix"> </div> </div> </li>'
                     })
                     $("#news").html(html);
@@ -30,9 +32,9 @@
 <div id="new_header" class="special-header">
     <div class="page-container new-header clearfix" id="nav" style="width:1152px;">
         <ul class="nav-item">
-            <li><a href="/SpringBoot-News/main" target="_self" class="imooc">首页</a></li>
-            <li><a href="/SpringBoot-News/login" target="_self">登录</a></li>
-            <li><a href="/SpringBoot-News/register" target="_self">注册</a></li>
+            <li><a href="${pageContext.request.contextPath}/main" target="_self" class="imooc">首页</a></li>
+            <li><a href="${pageContext.request.contextPath}/login" target="_self">登录</a></li>
+            <li><a href="${pageContext.request.contextPath}/register" target="_self">注册</a></li>
         </ul>
     </div>
 </div>
@@ -54,8 +56,7 @@
         <div class="right_con fixed" style="">
             <div class="wechatma-con js-wechatma-con">
                 <div class="ma-con">
-                    <div class="ma">
-                    </div>
+                    <image class="ma" src="${pageContext.request.contextPath}/static/img/664235822.png"></image>
 
                     <div class="desc">
                         <div class="title">

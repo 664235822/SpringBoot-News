@@ -9,12 +9,12 @@
 <html>
 <head>
     <title>管理员</title>
-    <link rel="stylesheet" href="/SpringBoot-News/static/css/index.css"/>
-    <script src="/SpringBoot-News/static/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/index.css"/>
+    <script src="${pageContext.request.contextPath}/static/js/jquery-3.6.0.min.js"></script>
     <script>
         $(function () {
             $.ajax({
-                url: "/SpringBoot-News/news/querylist",
+                url: "${pageContext.request.contextPath}/news/querylist",
                 type: "POST",
                 dataType: "json",
                 success: function (data) {
@@ -22,8 +22,8 @@
                         "<tr> <th>序号</th> <th>标题</th> <th>作者</th> " +
                         "<th>内容</th> <th>操作</th> </tr>";
                     $.each(data.list, function (i, item) {
-                        html += "<tr><td>" + item.id + "</td><td>" + item.title + "</td><td>" + item.author + "</td>" +
-                            "<td class='table-content'>" + item.content + "</td><td>" +
+                        html += "<tr><td>" + item.id + "</td><td class='table-content'>" + item.title + "</td><td>" + item.author + "</td>" +
+                            "<td class='table-content'>" + item.content + "</td><td class='table-button'>" +
                             "<input type='button' value='修改' class='update-button' onclick='updateNews(" + item.id + ")'/>" +
                             "<input type='button' value='删除' class='delete-button' onclick='deleteNews(" + item.id + ")'/>"
                     })
@@ -42,7 +42,7 @@
                 }
 
                 $.ajax({
-                    url: "/SpringBoot-News/news/publish",
+                    url: "${pageContext.request.contextPath}/news/publish",
                     type: "POST",
                     dataType: "json",
                     data: {
@@ -63,15 +63,21 @@
         })
 
         function updateNews(id) {
+            let author = $("#username").text();
             $.ajax({
-                url: "/SpringBoot-News/news/updateButton",
+                url: "${pageContext.request.contextPath}/news/updateButton",
                 type: "POST",
                 dataType: "json",
                 data: {
-                    "id": id
+                    "id": id,
+                    "author": author
                 },
                 success: function (data) {
-                    window.location.href = "/SpringBoot-News/update"
+                    if (data === true) {
+                        window.location.href = "${pageContext.request.contextPath}/update"
+                    } else {
+                        alert("修改新闻失败");
+                    }
                 },
                 error: function (data) {
                     alert("修改新闻失败");
@@ -80,15 +86,21 @@
         }
 
         function deleteNews(id) {
+            let author = $("#username").text();
             $.ajax({
-                url: "/SpringBoot-News/news/delete",
+                url: "${pageContext.request.contextPath}/news/delete",
                 type: "POST",
                 dataType: "json",
                 data: {
-                    "id": id
+                    "id": id,
+                    "author": author
                 },
                 success: function (data) {
-                    window.location.reload();
+                    if (data === true) {
+                        window.location.reload();
+                    } else {
+                        alert("删除新闻失败");
+                    }
                 },
                 error: function (data) {
                     alert("删除新闻失败");
@@ -101,8 +113,9 @@
 <div id="new_header" class="special-header">
     <div class="page-container new-header clearfix" id="nav" style="width:1152px;">
         <ul class="nav-item">
-            <li><a href="/SpringBoot-News/main" target="_self" class="imooc">首页</a></li>
-            <li><a href="/SpringBoot-News/admin" target="_self" id="username"><%=((User) session.getAttribute("user")).getUsername()%>
+            <li><a href="${pageContext.request.contextPath}/main" target="_self" class="imooc">首页</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin" target="_self"
+                   id="username"><%=((User) session.getAttribute("user")).getUsername()%>
             </a></li>
         </ul>
     </div>
@@ -134,8 +147,7 @@
 
             <div class="wechatma-con js-wechatma-con">
                 <div class="ma-con">
-                    <div class="ma">
-                    </div>
+                    <image class="ma" src="${pageContext.request.contextPath}/static/img/664235822.png"></image>
 
                     <div class="desc">
                         <div class="title">

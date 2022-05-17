@@ -8,7 +8,7 @@
     src: url('https://www.imooc.com/static/moco/v1.0/dist/imv2fonts/imv2.ttf') format('truetype');
 }
 
-.background{
+.background {
     background: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.kttpdq.com%2Fpic%2F5%2F3162%2F7755b9f6c4c7f036.jpg&refer=http%3A%2F%2Fimg.kttpdq.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642060911&t=c1f02a35b7dc31cae394b85922273f6b");
     background-size: cover;
 }
@@ -323,11 +323,11 @@ label {
     background-position: 0 -48px;
 }
 
-.ipt-code{
+.ipt-code {
     width: 200px !important;
 }
 
-.img-code{
+.img-code {
     vertical-align: middle;
     border-radius: 5px;
 }
@@ -522,7 +522,20 @@ ol, ul {
 }
 
 .main_con .list_con li .text_con .desc {
-    padding: 8px;
+    font-size: 14px;
+    color: #545c63;
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 18px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display:-webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+
+.main_con .list_con li .text_con .desc_news {
     font-size: 14px;
     color: #545c63;
     font-weight: 600;
@@ -686,10 +699,6 @@ ol, ul {
 .main_con .right_con .wechatma-con .ma-con .ma {
     width: 80px;
     height: 80px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-image: url("/SpringBoot-News/static/img/664235822.png");
 }
 
 .main_con .right_con .wechatma-con .ma-con .desc {
@@ -811,11 +820,13 @@ ol, ul {
     float: left;
     font-size: 14px;
 }
+
 .main_con .list_con li .text_con .author-box span {
     font-size: 12px;
     color: #1c1f21;
     vertical-align: middle;
 }
+
 #footer p {
     line-height: 1.7;
 }
@@ -823,9 +834,11 @@ ol, ul {
 .l {
     float: left;
 }
+
 a:link, a:visited {
     color: #1c1f21;
 }
+
 #footer .beian {
     background: url("https://www.imooc.com/static/img/beianicon.png") no-repeat 0 0;
     width: 16px;
@@ -844,12 +857,12 @@ a:link, a:visited {
     margin: 0 !important;
 }
 
-.publish-title{
+.publish-title {
     font-size: 18px;
     padding: 6px;
 }
 
-.publish-title-input{
+.publish-title-input {
     display: block;
     font-size: 16px;
     width: 100%;
@@ -858,14 +871,15 @@ a:link, a:visited {
     border: solid black 1px;
 }
 
-.publish-textarea{
+.publish-textarea {
+    resize: none;
     display: block;
     width: 100%;
     height: 200px;
     margin: 6px;
 }
 
-.publish-button{
+.publish-button {
     float: right;
     background: #3377ff;
     color: white;
@@ -874,7 +888,7 @@ a:link, a:visited {
     margin: 6px;
 }
 
-.update-button{
+.update-button {
     background: cadetblue;
     display: inline-block;
     color: white !important;
@@ -885,7 +899,7 @@ a:link, a:visited {
     vertical-align: middle;
 }
 
-.delete-button{
+.delete-button {
     background: red;
     color: white;
     width: 46px;
@@ -894,24 +908,27 @@ a:link, a:visited {
     vertical-align: middle;
 }
 
-#news{
+#news {
     font-size: 14px;
     display: block;
 }
 
-#news caption{
+#news caption {
     font-size: 18px;
     text-align: left;
     padding: 6px;
 }
 
-#news td{
-    padding: 6px;
+#news .table-button{
+    width: 120px;
 }
 
-#news .table-content{
+#news .table-content {
     max-width: 420px;
+    vertical-align: middle;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    display:-webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }

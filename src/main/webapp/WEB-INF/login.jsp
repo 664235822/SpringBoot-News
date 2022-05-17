@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>登录</title>
-    <link rel="stylesheet" href="/SpringBoot-News/static/css/index.css"/>
-    <script src="/SpringBoot-News/static/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/index.css"/>
+    <script src="${pageContext.request.contextPath}/static/js/jquery-3.6.0.min.js"></script>
     <script>
         $(function () {
             $("#login-button").click(function (e) {
@@ -19,7 +19,7 @@
                 }
 
                 $.ajax({
-                    url: "/SpringBoot-News/user/login",
+                    url: "${pageContext.request.contextPath}/user/login",
                     type: "POST",
                     dataType: "json",
                     data: {
@@ -28,7 +28,7 @@
                         "check_code": check_code
                     },
                     success: function (data) {
-                        window.location.href = "/SpringBoot-News/admin"
+                        window.location.href = "${pageContext.request.contextPath}/admin"
                     },
                     error: function (data) {
                         alert("登录失败");
@@ -66,7 +66,7 @@
                     <input id="check_code" type="text" name="check_code" class="ipt ipt-code js-pass-code"
                            placeholder="请输入验证码"
                            maxlength="20" autocomplete="off">
-                    <img class="img-code" src="/SpringBoot-News/servlet/CheckServlet"/>
+                    <img class="img-code" src="${pageContext.request.contextPath}/servlet/CheckServlet"/>
                     <p class="rlf-tip-wrap errorHint color-red" data-error-hint="请输入正确的验证码"></p></div>
                 <div class="rlf-group clearfix"><input type="button" value="登录" hidefocus="true" id="login-button"
                                                        class="moco-btn moco-btn-red moco-btn-lg btn-full xa-login">
@@ -75,7 +75,7 @@
         </div>
     </div>
     <div class="rl-model-footer">
-        <div class="pop-login-signup-box clearfix"><a href="/SpringBoot-News/register" data-fromto="signup:signin"
+        <div class="pop-login-signup-box clearfix"><a href="${pageContext.request.contextPath}/register" data-fromto="signup:signin"
                                                       class="xa-showSignin">注册新用户</a></div>
     </div>
 </div>

@@ -1,81 +1,48 @@
-<%@ page import="com.entity.News" %>
-<%@ page import="com.entity.User" %><%--
+<%@ page import="com.entity.News" %><%--
   Created by IntelliJ IDEA.
   User: zz664
-  Date: 2021/12/14
-  Time: 14:29
+  Date: 2022/5/17
+  Time: 23:07
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>修改新闻</title>
+    <title>Title</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/index.css"/>
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.6.0.min.js"></script>
-    <script>
-        $(function () {
-            $("#publish-button").click(function () {
-                let id = $("#id").val();
-                let author = $("#username").text();
-                let title = $("#title").val();
-                let content = $("#content").val();
-
-                if (title === "" || content === "") {
-                    alert("标题和内容不能为空白");
-                    return;
-                }
-
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/news/update",
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        "title": title,
-                        "content": content
-                    },
-                    success: function (data) {
-                        window.location.href = "${pageContext.request.contextPath}/admin";
-                    },
-                    error: function (data) {
-                        alert("发表新闻失败");
-                    }
-                })
-            })
-        })
-    </script>
 </head>
 <body>
 <div id="new_header" class="special-header">
     <div class="page-container new-header clearfix" id="nav" style="width:1152px;">
         <ul class="nav-item">
             <li><a href="${pageContext.request.contextPath}/main" target="_self" class="imooc">首页</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin" target="_self" id="username"><%=((User) session.getAttribute("user")).getUsername()%>
-            </a></li>
+            <li><a href="${pageContext.request.contextPath}/login" target="_self">登录</a></li>
+            <li><a href="${pageContext.request.contextPath}/register" target="_self">注册</a></li>
         </ul>
     </div>
 </div>
 <div id="main">
     <div class="sub-header">
         <div class="inner">
-            <span class="sub-logo">管理员</span>
+            <span class="sub-logo">新闻</span>
         </div>
     </div>
     <div class="main_con" style="clear: both">
         <div class="main_con">
             <div class="list_con">
-                <p id="id" class="publish-title">修改新闻</p>
-                <input type="text" id="title" value="<%=((News)session.getAttribute("news")).getTitle()%>"
-                       placeholder="请键入标题" class="publish-title-input" disabled/>
-                <textarea id="content"
-                          class="publish-textarea"><%=((News) session.getAttribute("news")).getContent()%></textarea>
-                <input id="publish-button" class="publish-button" type="button" value="发表"/>
-                <div class="try-read-box clearfix"></div>
+                <ul id="news">
+                    <li class="clearfix">
+                        <div class="text_con l">
+                            <p class="title"><%=((News) session.getAttribute("news")).getTitle()%></p>
+                        <div class="info"> <span>作者：<%=((News) session.getAttribute("news")).getAuthor()%></span></div>
+                            <div class="desc_news"><%=((News) session.getAttribute("news")).getContent()%></div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-
         </div>
         <div class="right_con fixed" style="">
-
-
             <div class="wechatma-con js-wechatma-con">
                 <div class="ma-con">
                     <image class="ma" src="${pageContext.request.contextPath}/static/img/664235822.png"></image>

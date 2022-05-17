@@ -13,12 +13,13 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/news")
 public class NewsController {
 
     @Resource
     private NewsMapper newsMapper;
 
-    @RequestMapping(value = "/news/querylist", method = RequestMethod.POST)
+    @RequestMapping(value = "/querylist", method = RequestMethod.POST)
     @ResponseBody
     public NewsList queryNewsList() {
         List<News> list = newsMapper.queryNewsList();
@@ -31,7 +32,20 @@ public class NewsController {
         return newsList;
     }
 
-    @RequestMapping(value = "/news/publish", method = RequestMethod.POST)
+    @RequestMapping(value = "queryNews", method = RequestMethod.GET)
+    public String queryNews(int id, HttpSession session) {
+        try {
+            News news = newsMapper.queryNews(id);
+            session.setAttribute("news", news);
+
+            return "news";
+        } catch (Exception e) {
+            return "main";
+        }
+
+    }
+
+    @RequestMapping(value = "/publish", method = RequestMethod.POST)
     @ResponseBody
     public boolean publishNews(News news) {
         try {
@@ -43,19 +57,22 @@ public class NewsController {
         }
     }
 
-    @RequestMapping(value = "/news/updateButton", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateButton", method = RequestMethod.POST)
     @ResponseBody
-    public boolean updateButton(int id, HttpSession session) {
+    public boolean updateButton(int id, String author, HttpSession session) {
         try {
             News news = newsMapper.queryNews(id);
-            session.setAttribute("news", news);
-            return true;
+            if (news.getAuthor().equals(author)) {
+                session.setAttribute("news", news);
+                return true;
+            }
+            return false;
         } catch (Exception e) {
             return false;
         }
     }
 
-    @RequestMapping(value = "/news/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public boolean updateNews(News news) {
         try {
@@ -67,13 +84,16 @@ public class NewsController {
         }
     }
 
-    @RequestMapping(value = "/news/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public boolean deleteNews(int id) {
+    public boolean deleteNews(int id, String author) {
         try {
-            newsMapper.deleteNews(id);
-
-            return true;
+            News news = newsMapper.queryNews(id);
+            if (news.getAuthor().equals(author)) {
+                newsMapper.deleteNews(id);
+                return true;
+            }
+            return false;
         } catch (Exception e) {
             return false;
         }
