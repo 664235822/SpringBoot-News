@@ -12,6 +12,25 @@
     <title>Title</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/index.css"/>
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.6.0.min.js"></script>
+    <script>
+        function clickLike(newsId) {
+            var username = $("#username").text();
+            if (username === "登录") {
+                alert("请登录后再点赞");
+                return;
+            }
+
+            $.ajax({
+                url: "${pageContext.request.contextPath}/news/clickLikes",
+                type: "POST",
+                dataType: "json",
+                data: {"newsId": newsId, "username": username},
+                success: function (data) {
+                    window.location.href = '${pageContext.request.contextPath}/news/queryNews?id=<%=((News) session.getAttribute("news")).getId()%>';
+                }
+            })
+        }
+    </script>
 </head>
 <body>
 <div id="new_header" class="special-header">
@@ -20,10 +39,9 @@
             <li><a href="${pageContext.request.contextPath}/main" target="_self" class="imooc">首页</a></li>
             <li><% if (request.getSession().getAttribute("user") != null) {%>
                 <a href="${pageContext.request.contextPath}/admin" target="_self"
-                   id="username"><%=((User) session.getAttribute("user")).getUsername()%>
-                </a>
+                   id="username"><%=((User) session.getAttribute("user")).getUsername()%></a>
                 <%} else {%>
-                <a href="${pageContext.request.contextPath}/login" target="_self">登录</a><%}%>
+                <a href="${pageContext.request.contextPath}/login" target="_self" id="username">登录</a><%}%>
             </li>
             <li><a href="${pageContext.request.contextPath}/register" target="_self">注册</a></li>
         </ul>
@@ -41,9 +59,15 @@
                 <ul id="news">
                     <li class="clearfix">
                         <div class="text_con l">
-                            <p class="title"><%=((News) session.getAttribute("news")).getTitle()%></p>
-                        <div class="info"> <span>作者：<%=((News) session.getAttribute("news")).getAuthor()%></span></div>
-                            <div class="desc_news"><%=((News) session.getAttribute("news")).getContent()%></div>
+                            <p class="title"><%=((News) session.getAttribute("news")).getTitle()%>
+                            </p>
+                            <div class="info"><span>作者：<%=((News) session.getAttribute("news")).getAuthor()%></span>
+                            </div>
+                            <div class="desc_news"><%=((News) session.getAttribute("news")).getContent()%>
+                            </div>
+                            <img src="${pageContext.request.contextPath}/static/img/like.png" width="20px" height="20px"
+                                 onclick="clickLike(<%=((News) session.getAttribute("news")).getId()%>)"/>
+                            <span><%=((News) session.getAttribute("news")).getLike()%></span>
                         </div>
                     </li>
                 </ul>

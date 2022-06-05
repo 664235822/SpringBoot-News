@@ -51,8 +51,7 @@
             <li><a href="${pageContext.request.contextPath}/main" target="_self" class="imooc">首页</a></li>
             <li><% if (request.getSession().getAttribute("user") != null) {%>
                 <a href="${pageContext.request.contextPath}/admin" target="_self"
-                   id="username"><%=((User) session.getAttribute("user")).getUsername()%>
-                </a>
+                   id="username"><%=((User) session.getAttribute("user")).getUsername()%></a>
                 <%} else {%>
                 <a href="${pageContext.request.contextPath}/login" target="_self">登录</a></li>
             <%}%>

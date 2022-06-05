@@ -8,91 +8,135 @@
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.6.0.min.js"></script>
     <script>
         $(function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/news/querylist",
+                type: "POST",
+                dataType: "json",
+                data: {"currentPage": 1},
+                success: function (data) {
+                    $("#currentPage").text(data.currentPage);
+                    $("#news-index").text(data.total);
+                    let html = "";
+                    $.each(data.list, function (i, item) {
+                        html += '<li class="clearfix"> <div class="text_con l"> ' +
+                            '<a href="${pageContext.request.contextPath}/news/queryNews?id=' + item.id + '" target="_self"> ' +
+                            '<p class="title">' + item.title + '</p> </a> ' +
+                            '<div class="info"> <span>作者：' + item.author + '</span> </div>' +
+                            '<div class="desc">' + item.content + '</div> <div class="try-read-box clearfix"> </div>' +
+                            '<img src="${pageContext.request.contextPath}/static/img/like.png" width="20px" height="20px"' +
+                            ' onclick="clickLike(' + item.id + ')"/><span>' + item.like + '</span></div></li>';
+                    })
+                    $("#news").html(html);
+                }
+            })
+
+            $("#lastPage").click(function () {
+                var currentPage = $("#currentPage").text();
+                if (parseInt(currentPage) === 1) {
+                    alert("已经是第一页！");
+                    return;
+                }
+
+                currentPage--;
+
                 $.ajax({
                     url: "${pageContext.request.contextPath}/news/querylist",
                     type: "POST",
                     dataType: "json",
-                    data: {"currentPage": 1},
+                    data: {"currentPage": currentPage},
                     success: function (data) {
                         $("#currentPage").text(data.currentPage);
                         $("#news-index").text(data.total);
                         let html = "";
                         $.each(data.list, function (i, item) {
                             html += '<li class="clearfix"> <div class="text_con l"> ' +
-                                '<a href="${pageContext.request.contextPath}/news/queryNews?id=' +
-                                item.id + '" target="_self"> <p class="title">' +
-                                item.title + '</p> </a> <div class="info"> <span>作者：' +
-                                item.author + '</span> </div> <div class="desc">' +
-                                item.content + '</div> <div class="try-read-box clearfix"> </div> </div> </li>'
+                                '<a href="${pageContext.request.contextPath}/news/queryNews?id=' + item.id + '" target="_self"> ' +
+                                '<p class="title">' + item.title + '</p> </a> ' +
+                                '<div class="info"> <span>作者：' + item.author + '</span> </div>' +
+                                '<div class="desc">' + item.content + '</div> <div class="try-read-box clearfix"> </div>' +
+                                '<img src="${pageContext.request.contextPath}/static/img/like.png" width="20px" height="20px"' +
+                                ' onclick="clickLike(' + item.id + ')"/><span>' + item.like + '</span></div></li>';
                         })
                         $("#news").html(html);
                     }
                 })
+            })
 
-                $("#lastPage").click(function () {
-                    var currentPage = $("#currentPage").text();
-                    if (parseInt(currentPage) === 1) {
-                        alert("已经是第一页！");
-                        return;
+            $("#nextPage").click(function () {
+                var total = $("#news-index").text();
+                var currentPage = $("#currentPage").text();
+                if (parseInt(total / 10 + 1) === parseInt(currentPage)) {
+                    alert("已经是最后一页！");
+                    return;
+                }
+
+                currentPage++;
+
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/news/querylist",
+                    type: "POST",
+                    dataType: "json",
+                    data: {"currentPage": currentPage},
+                    success: function (data) {
+                        $("#currentPage").text(data.currentPage);
+                        $("#news-index").text(data.total);
+                        let html = "";
+                        $.each(data.list, function (i, item) {
+                            html += '<li class="clearfix"> <div class="text_con l"> ' +
+                                '<a href="${pageContext.request.contextPath}/news/queryNews?id=' + item.id + '" target="_self"> ' +
+                                '<p class="title">' + item.title + '</p> </a> ' +
+                                '<div class="info"> <span>作者：' + item.author + '</span> </div>' +
+                                '<div class="desc">' + item.content + '</div> <div class="try-read-box clearfix"> </div>' +
+                                '<img src="${pageContext.request.contextPath}/static/img/like.png" width="20px" height="20px"' +
+                                ' onclick="clickLike(' + item.id + ')"/><span>' + item.like + '</span></div></li>';
+                        })
+                        $("#news").html(html);
                     }
-
-                    currentPage--;
-
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/news/querylist",
-                        type: "POST",
-                        dataType: "json",
-                        data: {"currentPage": currentPage},
-                        success: function (data) {
-                            $("#currentPage").text(data.currentPage);
-                            $("#news-index").text(data.total);
-                            let html = "";
-                            $.each(data.list, function (i, item) {
-                                html += '<li class="clearfix"> <div class="text_con l"> ' +
-                                    '<a href="${pageContext.request.contextPath}/news/queryNews?id=' +
-                                    item.id + '" target="_self"> <p class="title">' +
-                                    item.title + '</p> </a> <div class="info"> <span>作者：' +
-                                    item.author + '</span> </div> <div class="desc">' +
-                                    item.content + '</div> <div class="try-read-box clearfix"> </div> </div> </li>'
-                            })
-                            $("#news").html(html);
-                        }
-                    })
                 })
+            })
+        })
 
-                $("#nextPage").click(function () {
-                    var total = $("#news-index").text();
-                    var currentPage = $("#currentPage").text();
-                    if (parseInt(total / 10 + 1) === parseInt(currentPage)) {
-                        alert("已经是最后一页！");
-                        return;
-                    }
-
-                    currentPage++;
-
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/news/querylist",
-                        type: "POST",
-                        dataType: "json",
-                        data: {"currentPage": currentPage},
-                        success: function (data) {
-                            $("#currentPage").text(data.currentPage);
-                            $("#news-index").text(data.total);
-                            let html = "";
-                            $.each(data.list, function (i, item) {
-                                html += '<li class="clearfix"> <div class="text_con l"> ' +
-                                    '<a href="${pageContext.request.contextPath}/news/queryNews?id=' +
-                                    item.id + '" target="_self"> <p class="title">' +
-                                    item.title + '</p> </a> <div class="info"> <span>作者：' +
-                                    item.author + '</span> </div> <div class="desc">' +
-                                    item.content + '</div> <div class="try-read-box clearfix"> </div> </div> </li>'
-                            })
-                            $("#news").html(html);
-                        }
-                    })
-                })
+        function clickLike(newsId) {
+            var username = $("#username").text();
+            if (username === "登录") {
+                alert("请登录后再点赞");
+                return;
             }
-        )
+
+            $.ajax({
+                url: "${pageContext.request.contextPath}/news/clickLikes",
+                type: "POST",
+                dataType: "json",
+                data: {"newsId": newsId, "username": username},
+                success: function (data) {
+                    var currentPage = $("#currentPage").text();
+
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/news/querylist",
+                        type: "POST",
+                        dataType: "json",
+                        data: {"currentPage": currentPage},
+                        success: function (data) {
+                            $("#currentPage").text(data.currentPage);
+                            $("#news-index").text(data.total);
+                            let html = "";
+                            $.each(data.list, function (i, item) {
+                                html += '<li class="clearfix"> <div class="text_con l"> ' +
+                                    '<a href="${pageContext.request.contextPath}/news/queryNews?id=' + item.id + '" target="_self"> ' +
+                                    '<p class="title">' + item.title + '</p> </a> ' +
+                                    '<div class="info"> <span>作者：' + item.author + '</span> </div>' +
+                                    '<div class="desc">' + item.content + '</div> ' +
+                                    '<img src="${pageContext.request.contextPath}/static/img/like.png" width="20px" height="20px"' +
+                                    ' onclick="clickLike(' + item.id + ')"/><span>' + item.like + '</span></div>' +
+                                    '<div class="try-read-box clearfix"> </div></li>';
+                            })
+                            $("#news").html(html);
+                        }
+                    })
+                }
+            })
+        }
+
     </script>
 </head>
 <body>
@@ -102,10 +146,9 @@
             <li><a href="${pageContext.request.contextPath}/main" target="_self" class="imooc">首页</a></li>
             <li><% if (request.getSession().getAttribute("user") != null) {%>
                 <a href="${pageContext.request.contextPath}/admin" target="_self"
-                   id="username"><%=((User) session.getAttribute("user")).getUsername()%>
-                </a>
+                   id="username"><%=((User) session.getAttribute("user")).getUsername()%></a>
                 <%} else {%>
-                <a href="${pageContext.request.contextPath}/login" target="_self">登录</a><%}%>
+                <a href="${pageContext.request.contextPath}/login" target="_self" id="username">登录</a><%}%>
             </li>
             <li><a href="${pageContext.request.contextPath}/register" target="_self">注册</a></li>
         </ul>

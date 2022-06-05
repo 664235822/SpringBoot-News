@@ -1,7 +1,10 @@
 package com.controller;
 
+import com.entity.Likes;
 import com.entity.News;
 import com.entity.NewsList;
+import com.entity.User;
+import com.mapper.LikesMapper;
 import com.mapper.NewsMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +22,19 @@ public class NewsController {
     @Resource
     private NewsMapper newsMapper;
 
+    @Resource
+    private LikesMapper likesMapper;
+
     @RequestMapping(value = "/querylist", method = RequestMethod.POST)
     @ResponseBody
     public NewsList queryNewsList(int currentPage) {
         int currentIndex = (currentPage - 1) * 10;
         List<News> list = newsMapper.queryNewsList(currentIndex);
+
+        for (int i = 0; i < list.size(); i++) {
+            List<Likes> likesList = likesMapper.queryLikesList(list.get(i).getId());
+            list.get(i).setLike(likesList.size());
+        }
 
         int total = list.size();
         NewsList newsList = new NewsList();
@@ -38,6 +49,9 @@ public class NewsController {
     public String queryNews(int id, HttpSession session) {
         try {
             News news = newsMapper.queryNews(id);
+            List<Likes> likesList = likesMapper.queryLikesList(news.getId());
+            news.setLike(likesList.size());
+
             session.setAttribute("news", news);
 
             return "news";
@@ -61,10 +75,10 @@ public class NewsController {
 
     @RequestMapping(value = "/updateButton", method = RequestMethod.POST)
     @ResponseBody
-    public boolean updateButton(int id, String author, HttpSession session) {
+    public boolean updateButton(int id, HttpSession session) {
         try {
             News news = newsMapper.queryNews(id);
-            if (news.getAuthor().equals(author)) {
+            if (news.getAuthor().trim().equals(((User) session.getAttribute("user")).getUsername())) {
                 session.setAttribute("news", news);
                 return true;
             }
@@ -88,15 +102,28 @@ public class NewsController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public boolean deleteNews(int id, String author) {
+    public boolean deleteNews(int id, HttpSession session) {
         try {
             News news = newsMapper.queryNews(id);
-            if (news.getAuthor().equals(author)) {
+            if (news.getAuthor().trim().equals(((User) session.getAttribute("user")).getUsername())) {
                 newsMapper.deleteNews(id);
                 return true;
             }
             return false;
         } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @RequestMapping(value = "/clickLikes", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean clickLikes(Likes likes) {
+        Likes currentLikes = likesMapper.queryLikes(likes);
+        if (currentLikes == null) {
+            likesMapper.insertLike(likes);
+            return true;
+        } else {
+            likesMapper.deleteSingleLike(likes);
             return false;
         }
     }

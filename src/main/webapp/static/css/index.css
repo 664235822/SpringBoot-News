@@ -299,6 +299,12 @@ label {
     color: #37f;
 }
 
+span{
+    font-size: 14px;
+    vertical-align: center;
+    padding: 5px;
+}
+
 .erweima, .pcLogin {
     background: url(https://www.imooc.com/static/img/erweima.png) no-repeat 0 0;
     width: 60px;

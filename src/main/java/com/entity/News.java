@@ -10,6 +10,8 @@ public class News {
 
     private String content;
 
+    private int like;
+
     public int getId() {
         return id;
     }
@@ -40,5 +42,13 @@ public class News {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getLike() {
+        return like;
+    }
+
+    public void setLike(int like) {
+        this.like = like;
     }
 }

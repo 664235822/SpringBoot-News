@@ -124,14 +124,12 @@
         })
 
         function updateNews(id) {
-            let author = $("#username").text();
             $.ajax({
                 url: "${pageContext.request.contextPath}/news/updateButton",
                 type: "POST",
                 dataType: "json",
                 data: {
-                    "id": id,
-                    "author": author
+                    "id": id
                 },
                 success: function (data) {
                     if (data === true) {
@@ -147,14 +145,12 @@
         }
 
         function deleteNews(id) {
-            let author = $("#username").text();
             $.ajax({
                 url: "${pageContext.request.contextPath}/news/delete",
                 type: "POST",
                 dataType: "json",
                 data: {
-                    "id": id,
-                    "author": author
+                    "id": id
                 },
                 success: function (data) {
                     if (data === true) {
@@ -177,10 +173,9 @@
             <li><a href="${pageContext.request.contextPath}/main" target="_self" class="imooc">首页</a></li>
             <li><% if (request.getSession().getAttribute("user") != null) {%>
                 <a href="${pageContext.request.contextPath}/admin" target="_self"
-                   id="username"><%=((User) session.getAttribute("user")).getUsername()%>
-                </a>
+                   id="username"><%=((User) session.getAttribute("user")).getUsername()%></a>
                 <%} else {%>
-                <a href="${pageContext.request.contextPath}/login" target="_self">登录</a><%}%>
+                <a href="${pageContext.request.contextPath}/login" target="_self" id="username">登录</a><%}%>
             </li>
             <li><a href="${pageContext.request.contextPath}/register" target="_self">注册</a></li>
         </ul>
