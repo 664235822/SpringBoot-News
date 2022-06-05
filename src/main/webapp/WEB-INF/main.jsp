@@ -1,3 +1,4 @@
+<%@ page import="com.entity.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
@@ -7,25 +8,91 @@
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.6.0.min.js"></script>
     <script>
         $(function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/news/querylist",
-                type: "POST",
-                dataType: "json",
-                success: function (data) {
-                    $("#news-index").html(data.total);
-                    let html = "";
-                    $.each(data.list, function (i, item) {
-                        html += '<li class="clearfix"> <div class="text_con l"> ' +
-                            '<a href="${pageContext.request.contextPath}/news/queryNews?id=' +
-                            item.id + '" target="_self"> <p class="title">' +
-                            item.title + '</p> </a> <div class="info"> <span>作者：' +
-                            item.author + '</span> </div> <div class="desc">' +
-                            item.content + '</div> <div class="try-read-box clearfix"> </div> </div> </li>'
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/news/querylist",
+                    type: "POST",
+                    dataType: "json",
+                    data: {"currentPage": 1},
+                    success: function (data) {
+                        $("#currentPage").text(data.currentPage);
+                        $("#news-index").text(data.total);
+                        let html = "";
+                        $.each(data.list, function (i, item) {
+                            html += '<li class="clearfix"> <div class="text_con l"> ' +
+                                '<a href="${pageContext.request.contextPath}/news/queryNews?id=' +
+                                item.id + '" target="_self"> <p class="title">' +
+                                item.title + '</p> </a> <div class="info"> <span>作者：' +
+                                item.author + '</span> </div> <div class="desc">' +
+                                item.content + '</div> <div class="try-read-box clearfix"> </div> </div> </li>'
+                        })
+                        $("#news").html(html);
+                    }
+                })
+
+                $("#lastPage").click(function () {
+                    var currentPage = $("#currentPage").text();
+                    if (parseInt(currentPage) === 1) {
+                        alert("已经是第一页！");
+                        return;
+                    }
+
+                    currentPage--;
+
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/news/querylist",
+                        type: "POST",
+                        dataType: "json",
+                        data: {"currentPage": currentPage},
+                        success: function (data) {
+                            $("#currentPage").text(data.currentPage);
+                            $("#news-index").text(data.total);
+                            let html = "";
+                            $.each(data.list, function (i, item) {
+                                html += '<li class="clearfix"> <div class="text_con l"> ' +
+                                    '<a href="${pageContext.request.contextPath}/news/queryNews?id=' +
+                                    item.id + '" target="_self"> <p class="title">' +
+                                    item.title + '</p> </a> <div class="info"> <span>作者：' +
+                                    item.author + '</span> </div> <div class="desc">' +
+                                    item.content + '</div> <div class="try-read-box clearfix"> </div> </div> </li>'
+                            })
+                            $("#news").html(html);
+                        }
                     })
-                    $("#news").html(html);
-                }
-            })
-        })
+                })
+
+                $("#nextPage").click(function () {
+                    var total = $("#news-index").text();
+                    var currentPage = $("#currentPage").text();
+                    if (parseInt(total / 10 + 1) === parseInt(currentPage)) {
+                        alert("已经是最后一页！");
+                        return;
+                    }
+
+                    currentPage++;
+
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/news/querylist",
+                        type: "POST",
+                        dataType: "json",
+                        data: {"currentPage": currentPage},
+                        success: function (data) {
+                            $("#currentPage").text(data.currentPage);
+                            $("#news-index").text(data.total);
+                            let html = "";
+                            $.each(data.list, function (i, item) {
+                                html += '<li class="clearfix"> <div class="text_con l"> ' +
+                                    '<a href="${pageContext.request.contextPath}/news/queryNews?id=' +
+                                    item.id + '" target="_self"> <p class="title">' +
+                                    item.title + '</p> </a> <div class="info"> <span>作者：' +
+                                    item.author + '</span> </div> <div class="desc">' +
+                                    item.content + '</div> <div class="try-read-box clearfix"> </div> </div> </li>'
+                            })
+                            $("#news").html(html);
+                        }
+                    })
+                })
+            }
+        )
     </script>
 </head>
 <body>
@@ -33,7 +100,13 @@
     <div class="page-container new-header clearfix" id="nav" style="width:1152px;">
         <ul class="nav-item">
             <li><a href="${pageContext.request.contextPath}/main" target="_self" class="imooc">首页</a></li>
-            <li><a href="${pageContext.request.contextPath}/login" target="_self">登录</a></li>
+            <li><% if (request.getSession().getAttribute("user") != null) {%>
+                <a href="${pageContext.request.contextPath}/admin" target="_self"
+                   id="username"><%=((User) session.getAttribute("user")).getUsername()%>
+                </a>
+                <%} else {%>
+                <a href="${pageContext.request.contextPath}/login" target="_self">登录</a><%}%>
+            </li>
             <li><a href="${pageContext.request.contextPath}/register" target="_self">注册</a></li>
         </ul>
     </div>
@@ -42,7 +115,7 @@
     <div class="sub-header">
         <div class="inner">
             <span class="sub-logo">新闻</span>
-            <p class="total-course">共<span id="news-index"></span>篇</p>
+            <p class="total-course">第<span id="currentPage"></span>页，共<span id="news-index"></span>篇</p>
         </div>
     </div>
     <div class="main_con" style="clear: both">
@@ -51,7 +124,10 @@
                 <ul id="news">
 
                 </ul>
+                <input id="lastPage" class="page" type="button" onclick="" value="上一页"/>
+                <input id="nextPage" class="page" type="button" value="下一页"/>
             </div>
+
         </div>
         <div class="right_con fixed" style="">
             <div class="wechatma-con js-wechatma-con">

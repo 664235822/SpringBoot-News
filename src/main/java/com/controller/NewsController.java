@@ -21,13 +21,15 @@ public class NewsController {
 
     @RequestMapping(value = "/querylist", method = RequestMethod.POST)
     @ResponseBody
-    public NewsList queryNewsList() {
-        List<News> list = newsMapper.queryNewsList();
-        int total = list.size();
+    public NewsList queryNewsList(int currentPage) {
+        int currentIndex = (currentPage - 1) * 10;
+        List<News> list = newsMapper.queryNewsList(currentIndex);
 
+        int total = list.size();
         NewsList newsList = new NewsList();
         newsList.setTotal(total);
         newsList.setList(list);
+        newsList.setCurrentPage(currentPage);
 
         return newsList;
     }

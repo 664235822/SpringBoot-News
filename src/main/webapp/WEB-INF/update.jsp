@@ -49,8 +49,14 @@
     <div class="page-container new-header clearfix" id="nav" style="width:1152px;">
         <ul class="nav-item">
             <li><a href="${pageContext.request.contextPath}/main" target="_self" class="imooc">首页</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin" target="_self" id="username"><%=((User) session.getAttribute("user")).getUsername()%>
-            </a></li>
+            <li><% if (request.getSession().getAttribute("user") != null) {%>
+                <a href="${pageContext.request.contextPath}/admin" target="_self"
+                   id="username"><%=((User) session.getAttribute("user")).getUsername()%>
+                </a>
+                <%} else {%>
+                <a href="${pageContext.request.contextPath}/login" target="_self">登录</a></li>
+            <%}%>
+            <li><a href="${pageContext.request.contextPath}/register" target="_self">注册</a></li>
         </ul>
     </div>
 </div>

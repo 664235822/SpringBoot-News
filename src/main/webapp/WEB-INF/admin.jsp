@@ -17,7 +17,9 @@
                 url: "${pageContext.request.contextPath}/news/querylist",
                 type: "POST",
                 dataType: "json",
+                data: {"currentPage": 1},
                 success: function (data) {
+                    $("#currentPage").text(data.currentPage);
                     let html = "<caption>新闻列表管理</caption> " +
                         "<tr> <th>序号</th> <th>标题</th> <th>作者</th> " +
                         "<th>内容</th> <th>操作</th> </tr>";
@@ -59,7 +61,66 @@
                 })
             })
 
+            $("#lastPage").click(function () {
+                var currentPage = $("#currentPage").text();
+                if (parseInt(currentPage) === 1) {
+                    alert("已经是第一页！");
+                    return;
+                }
 
+                currentPage--;
+
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/news/querylist",
+                    type: "POST",
+                    dataType: "json",
+                    data: {"currentPage": currentPage},
+                    success: function (data) {
+                        $("#currentPage").text(data.currentPage);
+                        let html = "<caption>新闻列表管理</caption> " +
+                            "<tr> <th>序号</th> <th>标题</th> <th>作者</th> " +
+                            "<th>内容</th> <th>操作</th> </tr>";
+                        $.each(data.list, function (i, item) {
+                            html += "<tr><td>" + item.id + "</td><td class='table-content'>" + item.title + "</td><td>" + item.author + "</td>" +
+                                "<td class='table-content'>" + item.content + "</td><td class='table-button'>" +
+                                "<input type='button' value='修改' class='update-button' onclick='updateNews(" + item.id + ")'/>" +
+                                "<input type='button' value='删除' class='delete-button' onclick='deleteNews(" + item.id + ")'/>"
+                        })
+                        $("#news").html(html);
+                    }
+                })
+            })
+
+            $("#nextPage").click(function () {
+                var total = $("#news-index").text();
+                var currentPage = $("#currentPage").text();
+                if (parseInt(total / 10 + 1) === parseInt(currentPage)) {
+                    alert("已经是最后一页！");
+                    return;
+                }
+
+                currentPage++;
+
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/news/querylist",
+                    type: "POST",
+                    dataType: "json",
+                    data: {"currentPage": currentPage},
+                    success: function (data) {
+                        $("#currentPage").text(data.currentPage);
+                        let html = "<caption>新闻列表管理</caption> " +
+                            "<tr> <th>序号</th> <th>标题</th> <th>作者</th> " +
+                            "<th>内容</th> <th>操作</th> </tr>";
+                        $.each(data.list, function (i, item) {
+                            html += "<tr><td>" + item.id + "</td><td class='table-content'>" + item.title + "</td><td>" + item.author + "</td>" +
+                                "<td class='table-content'>" + item.content + "</td><td class='table-button'>" +
+                                "<input type='button' value='修改' class='update-button' onclick='updateNews(" + item.id + ")'/>" +
+                                "<input type='button' value='删除' class='delete-button' onclick='deleteNews(" + item.id + ")'/>"
+                        })
+                        $("#news").html(html);
+                    }
+                })
+            })
         })
 
         function updateNews(id) {
@@ -114,9 +175,14 @@
     <div class="page-container new-header clearfix" id="nav" style="width:1152px;">
         <ul class="nav-item">
             <li><a href="${pageContext.request.contextPath}/main" target="_self" class="imooc">首页</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin" target="_self"
+            <li><% if (request.getSession().getAttribute("user") != null) {%>
+                <a href="${pageContext.request.contextPath}/admin" target="_self"
                    id="username"><%=((User) session.getAttribute("user")).getUsername()%>
-            </a></li>
+                </a>
+                <%} else {%>
+                <a href="${pageContext.request.contextPath}/login" target="_self">登录</a><%}%>
+            </li>
+            <li><a href="${pageContext.request.contextPath}/register" target="_self">注册</a></li>
         </ul>
     </div>
 </div>
@@ -139,6 +205,9 @@
 
 
                 </table>
+                <input id="lastPage" class="page" type="button" onclick="" value="上一页"/>
+                第<span id="currentPage"></span>页
+                <input id="nextPage" class="page" type="button" value="下一页"/>
             </div>
 
         </div>

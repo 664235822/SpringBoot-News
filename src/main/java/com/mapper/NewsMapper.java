@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface NewsMapper {
 
-    List<News> queryNewsList();
+    List<News> queryNewsList(int currentIndex);
 
     News queryNews(int id);
 
