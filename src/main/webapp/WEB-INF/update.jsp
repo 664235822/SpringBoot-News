@@ -15,8 +15,6 @@
     <script>
         $(function () {
             $("#publish-button").click(function () {
-                let id = $("#id").val();
-                let author = $("#username").text();
                 let title = $("#title").val();
                 let content = $("#content").val();
 

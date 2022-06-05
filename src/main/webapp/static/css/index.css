@@ -438,7 +438,8 @@ ol, ul {
 #main {
     padding: 0;
     margin-top: 10px;
-    background: #f3f5f6;
+    background: url(https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.kttpdq.com%2Fpic%2F5%2F3162%2F7755b9f6c4c7f036.jpg&refer=http%3A%2F%2Fimg.kttpdq.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642060911&t=c1f02a35b7dc31cae394b85922273f6b);
+    background-size: cover;
     min-height: calc(100vh - 206px);
 }
 
@@ -929,6 +930,10 @@ a:link, a:visited {
     font-size: 18px;
     text-align: left;
     padding: 6px;
+}
+
+#news td{
+    vertical-align: top;
 }
 
 #news .table-button{
