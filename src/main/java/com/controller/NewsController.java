@@ -1,9 +1,7 @@
 package com.controller;
 
-import com.entity.Likes;
-import com.entity.News;
-import com.entity.NewsList;
-import com.entity.User;
+import com.entity.*;
+import com.mapper.CommentsMapper;
 import com.mapper.LikesMapper;
 import com.mapper.NewsMapper;
 import org.springframework.stereotype.Controller;
@@ -25,7 +23,10 @@ public class NewsController {
     @Resource
     private LikesMapper likesMapper;
 
-    @RequestMapping(value = "/querylist", method = RequestMethod.POST)
+    @Resource
+    private CommentsMapper commentsMapper;
+
+    @RequestMapping(value = "/queryNewsList", method = RequestMethod.POST)
     @ResponseBody
     public NewsList queryNewsList(int currentPage) {
         int currentIndex = (currentPage - 1) * 10;
@@ -34,6 +35,9 @@ public class NewsController {
         for (int i = 0; i < list.size(); i++) {
             List<Likes> likesList = likesMapper.queryLikesList(list.get(i).getId());
             list.get(i).setLike(likesList.size());
+
+            List<Comment> commentList = commentsMapper.queryCommentList(list.get(i).getId());
+            list.get(i).setComments(commentList.size());
         }
 
         int total = list.size();
@@ -51,6 +55,8 @@ public class NewsController {
             News news = newsMapper.queryNews(id);
             List<Likes> likesList = likesMapper.queryLikesList(news.getId());
             news.setLike(likesList.size());
+            List<Comment> commentList = commentsMapper.queryCommentList(news.getId());
+            news.setComments(commentList.size());
 
             session.setAttribute("news", news);
 
@@ -63,11 +69,14 @@ public class NewsController {
 
     @RequestMapping(value = "/publish", method = RequestMethod.POST)
     @ResponseBody
-    public boolean publishNews(News news) {
+    public boolean publishNews(News news, HttpSession session) {
         try {
-            newsMapper.insertNews(news);
+            if (session.getAttribute("user") != null) {
+                newsMapper.insertNews(news);
 
-            return true;
+                return true;
+            }
+            return false;
         } catch (Exception e) {
             return false;
         }
@@ -78,7 +87,7 @@ public class NewsController {
     public boolean updateButton(int id, HttpSession session) {
         try {
             News news = newsMapper.queryNews(id);
-            if (news.getAuthor().trim().equals(((User) session.getAttribute("user")).getUsername())) {
+            if (news.getUsername().trim().equals(((User) session.getAttribute("user")).getUsername())) {
                 session.setAttribute("news", news);
                 return true;
             }
@@ -105,8 +114,10 @@ public class NewsController {
     public boolean deleteNews(int id, HttpSession session) {
         try {
             News news = newsMapper.queryNews(id);
-            if (news.getAuthor().trim().equals(((User) session.getAttribute("user")).getUsername())) {
+            if (news.getUsername().trim().equals(((User) session.getAttribute("user")).getUsername())) {
                 newsMapper.deleteNews(id);
+                likesMapper.deleteLikeByNews(id);
+                commentsMapper.deleteCommentByNews(id);
                 return true;
             }
             return false;
@@ -117,14 +128,17 @@ public class NewsController {
 
     @RequestMapping(value = "/clickLikes", method = RequestMethod.POST)
     @ResponseBody
-    public boolean clickLikes(Likes likes) {
-        Likes currentLikes = likesMapper.queryLikes(likes);
-        if (currentLikes == null) {
-            likesMapper.insertLike(likes);
+    public boolean clickLikes(Likes likes, HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            Likes currentLikes = likesMapper.queryLikes(likes);
+            if (currentLikes == null) {
+                likesMapper.insertLike(likes);
+            } else {
+                likesMapper.deleteSingleLike(likes);
+            }
+
             return true;
-        } else {
-            likesMapper.deleteSingleLike(likes);
-            return false;
         }
+        return false;
     }
 }

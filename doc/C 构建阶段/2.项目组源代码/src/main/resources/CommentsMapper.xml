@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.CommentsMapper">
+    <resultMap id="comments" type="com.entity.Comment">
+        <id column="id" property="id" javaType="int"/>
+        <result column="newsId" property="newsId" javaType="int"/>
+        <result column="userId" property="userId" javaType="int"/>
+        <result column="content" property="content" javaType="String"/>
+    </resultMap>
+    <select id="queryCommentList" resultType="com.entity.Comment">
+        select *
+        from comments
+        <where>newsId = ${newsId}</where>
+    </select>
+    <select id="queryCommentListLimit" resultType="com.entity.Comment">
+        select *
+        from comments
+        <where>newsId = ${newsId}</where>
+        limit ${currentIndex},10;
+    </select>
+    <select id="queryComment" resultType="com.entity.Comment">
+        select *
+        from comments
+        <where>id = ${id}</where>
+    </select>
+    <select id="insertComment" parameterType="com.entity.Comment">
+        insert into comments (newsId, username, content) value (#{newsId},#{username},#{content});
+    </select>
+    <delete id="deleteCommentById">
+        delete
+        from comments
+        <where>id = ${id}</where>;
+    </delete>
+    <delete id="deleteCommentByNews">
+        delete from comments
+        <where>newsId = ${newsId}</where>;
+    </delete>
+</mapper>

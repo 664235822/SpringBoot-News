@@ -30,6 +30,6 @@
     <delete id="deleteLikeByNews">
         delete
         from likes
-        where newsId = ${newsId};
+        <where>newsId = ${newsId}</where>;
     </delete>
 </mapper>

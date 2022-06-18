@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.27, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
 --
 -- Host: localhost    Database: News
 -- ------------------------------------------------------
--- Server version	8.0.27-0ubuntu0.20.04.1
+-- Server version	8.0.29-0ubuntu0.20.04.3
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,6 +16,56 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `comments`
+--
+
+DROP TABLE IF EXISTS `comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `comments` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `newsId` int NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `content` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comments`
+--
+
+LOCK TABLES `comments` WRITE;
+/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+INSERT INTO `comments` VALUES (6,9,'admin\n                ','1213123'),(7,9,'admin\n                ','fjaldij ');
+/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `likes`
+--
+
+DROP TABLE IF EXISTS `likes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `likes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `newsId` int NOT NULL,
+  `username` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `likes`
+--
+
+LOCK TABLES `likes` WRITE;
+/*!40000 ALTER TABLE `likes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `likes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `news`
 --
 
@@ -25,11 +75,11 @@ DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `author` varchar(255) NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `content` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `titlle_UNIQUE` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +88,7 @@ CREATE TABLE `news` (
 
 LOCK TABLES `news` WRITE;
 /*!40000 ALTER TABLE `news` DISABLE KEYS */;
-INSERT INTO `news` VALUES (1,'英雄联盟','admin\n            ','我是 Riot Rovient，从 12 月 10 日的执事(2021)事件开始，我们将对《英雄联盟》的任务积分系统进行调整。这次调整会尽量贴近现有系统，不会对大家的体验有很大影响。此外，有具体目标的任务(如“击杀 600 个小兵”)也不会改动。\n\n那么，到底哪里变了呢?\n\n今后所有《英雄联盟》事件中，积分奖励将根据你的游戏时长，而非游戏局数来发放。根据召唤师峡谷一局 PvP 比赛的平均时长，对部分任务的目标进行了调整。\n\n  ●  每周胜场任务：获得 40 积分，胜场 = 5 分 | 负场 = 2 分 —> 通过参加和赢得比赛获取 1650 分。每玩 1 分钟可获得 4 分，胜场每玩 1 分钟可获得 6 分(奖励 250 枚事件币)\n\n  ●  法球任务：进行 30 场对局 —> 获取 4500 分(奖励 1 个事件法球 + 40 枚事件币)\n\n  ●  通行证代币储存任务：进行一场对局(根据游戏模式和胜负，奖励 2-10 枚事件币) —> 获取 400 分(奖励 20 枚事件币)\n\n以下调整也将同时生效：\n\n  ●  极地大乱斗和限时游戏模式每玩 1 分钟可获得 4 分，胜场每玩 1 分钟可获得 6 分。此调整涵盖无限火力、克隆大作战、终极魔典等游戏模式。也就是说，这些模式的积分与 PvP 召唤师峡谷对局相同。\n\n  ●  《云顶之弈》每玩 1 分钟可获得 2 分，最终排名 1-4 位的对局每玩 1 分钟可获得 3 分。同时还加入了《云顶之弈》挂机检测功能。\n\n  ●  《云顶之弈》狂暴模式和双人作战也可积累《英雄联盟》任务进度了!\n\n  ●  人机对战游戏每玩 1 分钟可获得 1 分，胜场每玩 1 分钟可获得 2 分，积分速度是召唤师峡谷 PvP 对局的 33%。此模式仍不计入通行证代币储存任务。'),(2,'魔兽世界','admin\n            ','和最初发布《魔兽世界》经典怀旧服时一样，我们计划了六个内容发布阶段。但在旧世赛季服中，阶段解锁的速度将会加快。我们计划的周期为12个月，大约每隔一两个月都会解锁新的阶段。以下是目前的六个阶段的概要：\n\n第1阶段（《魔兽世界》旧世赛季服上线）\n\n熔火之心\n奥妮克希亚的巢穴\n玛拉顿\nPvP荣誉系统和战场（从第3和第4阶段提前）\n厄运之槌\n第2阶段\n\n艾索雷苟斯\n卡扎克\n第3阶段\n\n黑翼之巢\n暗月马戏团\n开始掉落暗月套牌\n第4阶段\n\n祖尔格拉布\n梦魇之龙\n第5阶段\n\n安其拉战争捐献开始\n安其拉团队副本随战争捐献进度开启\n第6阶段\n\n纳克萨玛斯\n天灾入侵\n补丁说明\n你可以在这里了解《魔兽世界》旧世赛季服的补丁说明。'),(3,'Dota2','admin\n            ','Dota职业巡回赛（DPC）2021/2022赛季的比赛即将打响，在新的赛季中，将有三次巡回赛，每次巡回包含2个联赛：1届地区联赛（DPC联赛）和1届甲级联赛（MAJOR）。而新赛季的DPC积分分配也有所调整，随着举办时间的推移，越靠近国际邀请赛（TI）的巡回赛，所提供的DPC积分也会随之增多，详细的DPC积分分配可以在下文中查看。\n在2020-2021赛季，完美世界电竞承办了DPC中国联赛全部两个赛季的比赛，并制作了两次甲级联赛（MAJOR）及国际邀请赛的中文信号流，在新的赛季中，完美世界电竞将继续承办2022 DPC中国联赛，致力于为玩家带来优秀的DOTA2赛事制作和直播。作为新赛季首个官方赛事，2022 DPC中国联赛 第一赛季将以“力量”为主题。让我们一起拭目以待，来看看转会期之后，哪些战队能够在新的赛季中脱颖而出。');
+INSERT INTO `news` VALUES (9,'辽宁大连“11·03”疫情问责：批捕多人、追责40余人','admin\n            ','中新社大连12月20日电 (记者 杨毅)辽宁省大连市新冠肺炎疫情防控工作会议20日召开，听取“11·03”疫情溯源溯责溯罪工作进展情况汇报。根据会议通报，已有多人被检察机关依法批准逮捕，大连市纪委监委对42人追究党纪政务责任。\n<br>\n会议指出，“11·03”疫情是一起首站定点冷库、冷链食品加工企业和核酸检测、消杀第三方公司等进口冷链关联企业，为谋取不当利益藐视国家法律、置人民生命安全于不顾，勾结形成非法利益共同体，全链条违法犯罪，加之监管严重失职渎职而引发的重大事件。目前，警方已查实涉事企业及责任人员涉嫌妨害传染病防治、非国家工作人员行贿受贿、职务侵占等犯罪事实。\n<br>\n会议称，大连科强食品有限公司作为首站定点冷库，企业负责人、管理人员依法经营意识缺失，严重违反《大连市冷库疫情防控管理标准》等规定，造成新冠疫情暴发，涉嫌妨害传染病防治罪，警方已对公司法人代表、业务经理、业务员共5人采取刑事强制措施，其中2人已被检方依法批准逮捕。\n<br>\n<img src=\"https://ttpcstatic.dftoutiao.com/ecms/image/20220617/660x372_62abc0bc2ff6c.jpeg_.webp\"/>\n此外，大连海青水产有限公司未落实有关防疫规定导致公司内部出现聚集性疫情，警方已对公司法人代表、工厂部总经理2人采取刑事强制措施。大连阳光金服综合门诊有限公司、大连连检熏蒸消毒有限公司、大连达亿检疫处理技术有限公司等以少采、空采等手段弄虚作假，造成新冠疫情传播的重大风险，上述3家公司共计8人被采取刑事强制措施，其中5人已被批准逮捕。\n<br>\n会议指出，大连市纪委监委对涉嫌失职渎职犯罪的庄河市首站定点冷库专班2名主要责任人员采取留置措施，将依法追究刑事责任。对庄河市委市政府分管领导和首站定点冷库专班、科强工作组以及有关职能部门、属地街道的责任人员，对大连市行业监管部门的责任人员等，共计42人追究党纪政务责任。同时，按干部管理权限报请辽宁省委省纪委对大连市政府分管领导，庄河市委市政府党政主要领导追责问责。(完)'),(10,'赵立坚宣布：中方决定对美方4名人员进行对等反制','admin\n            ','【环球时报-环球网报道 记者 乌元春】在12月21日的外交部例行记者会上，有记者提问：12月10日，美国国务院和财政部宣布，根据美国内法对所谓在新疆“侵犯人权”的4名中方官员实施制裁。中方对此有何回应？\n<br>\n发言人赵立坚对此表示，美方依据国内法、借口所谓新疆“人权”问题，对中方官员进行非法制裁，有关行径严重干涉中国内政，严重违反国际关系基本准则，严重损害中美关系。中方对此坚决反对，强烈谴责。\n<br>\n赵立坚宣布，针对美方上述错误行径，中方决定依据中国《反外国制裁法》进行对等反制。从即日起，对美国国际宗教自由委员会主席马恩扎、副主席特克尔、委员巴尔加瓦、委员卡尔实施相应反制措施，包括禁止上述人员入境中国，包括内地和香港澳门，冻结其在华财产，禁止中国公民和机构同其交易。\n<br>\n赵立坚指出，新疆事务纯属中国内政，美方没有权利没有资格横加干涉，美方应撤销所谓制裁，停止干涉新疆事务和中国内政，中方将视形势发展作出进一步反应。'),(11,'上海震旦职业学院教师被开除后续，南京大学教授朋友圈嘲讽举报者','admin\n            ','“学高为师，身正为范。”\n<br>\n这是对师范最好的诠释，同时也是对广大教师从业者最基本的要求。\n<br>\n教师在学生心目中的地位毋庸置疑，学生们大都会选择无条件地信任老师，所以这就要求教师们应当以身作则、树立表率，从思想上、行动上、作风上给学生们树立一个好的榜样。\n<br>\n相反，如果教师们发布了一些错误言论，传播一种错误的价值观，那将是对学生最大的误导和伤害。\n<br>\n上海震旦职业学院教师宋庚一就是发生在我们身边最典型的例子，作为一名高校教师，却公然在课堂上发表一些错误言论，质疑南京大屠杀遇难者人数，甚至还称应当让我们不要去恨，而应当反思战争是怎么来的。\n<br>\n上海震旦职业学院教师被开除后续，南京大学教授朋友圈嘲讽举报者\n这样的观点和言论着实让人感觉毁三观，也正是因为如此，才会有部分学生难以忍受，也不愿再让如此失德之人继续站在讲台之上。所以便通过手机拍摄了相关视频，后来该视频被上传至网络后引发了广泛讨论。');
 /*!40000 ALTER TABLE `news` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,7 +105,7 @@ CREATE TABLE `users` (
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +114,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','123456');
+INSERT INTO `users` VALUES (1,'admin','123456'),(2,'664235822@qq.com','156318aq'),(4,'15808467206','1123456'),(5,'19881166552','123456'),(6,'11111','1');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -77,4 +127,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-14 16:42:43
+-- Dump completed on 2022-06-18 16:04:07

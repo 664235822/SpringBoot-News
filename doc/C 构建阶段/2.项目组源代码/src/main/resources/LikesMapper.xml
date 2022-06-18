@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.LikesMapper">
+    <resultMap id="Likes" type="com.entity.Likes">
+        <id column="id" property="id" javaType="int"/>
+        <result column="newsId" property="newsId" javaType="int"/>
+        <result column="userId" property="userId" javaType="int"/>
+    </resultMap>
+    <select id="queryLikesList" resultType="com.entity.Likes">
+        select *
+        from likes
+        <where>newsId = ${newsId}</where>;
+    </select>
+    <select id="queryLikes" parameterType="com.entity.Likes" resultType="com.entity.Likes">
+        select *
+        from likes
+        <where>newsId = #{newsId} and username=#{username}</where>
+    </select>
+    <insert id="insertLike" parameterType="com.entity.Likes">
+        insert into likes (newsId, username) value (#{newsId},#{username});
+    </insert>
+    <delete id="deleteSingleLike" parameterType="com.entity.Likes">
+        delete
+        from likes
+        <where>newsId = #{newsId} and username = #{username}</where>;
+    </delete>
+    <delete id="deleteLikeByNews">
+        delete
+        from likes
+        <where>newsId = ${newsId}</where>;
+    </delete>
+</mapper>

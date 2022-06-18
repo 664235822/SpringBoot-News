@@ -6,11 +6,13 @@ public class News {
 
     private String title;
 
-    private String author;
+    private String username;
 
     private String content;
 
     private int like;
+
+    private int comments;
 
     public int getId() {
         return id;
@@ -28,12 +30,12 @@ public class News {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getContent() {
@@ -50,5 +52,13 @@ public class News {
 
     public void setLike(int like) {
         this.like = like;
+    }
+
+    public int getComments() {
+        return comments;
+    }
+
+    public void setComments(int comments) {
+        this.comments = comments;
     }
 }
